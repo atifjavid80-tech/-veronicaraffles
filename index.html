@@ -328,7 +328,7 @@
             box-shadow: 0 0 40px rgba(0,229,255,0.8), 0 0 80px rgba(0,229,255,0.4), 0 0 120px rgba(0,229,255,0.2);
             transform: translateY(-5px);
         }
-        .ticket-img-box img { width: 100%; height: auto; display: block; }
+        .ticket-img-box img { width: 100%; height: auto; display: block; transition: 0.3s; }
 
         .models-section { padding: 60px 0; }
         .model-card {
@@ -643,7 +643,7 @@
                 <span class="cyan-glow" data-i18n="hero-title-3">SAM 12,000 BTU</span>
             </h1>
 
-            <!-- AC IMAGE: Nueva imagen SAM -->
+            <!-- AC IMAGE -->
             <img src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/BfznQ1MMlpJmf3AhtPUEULO7QidfqE4Chh0VYNac.webp"
                  onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/main/ac.webp';"
                  alt="Aire Acondicionado SAM 12,000 BTU con Compresor Toshiba"
@@ -688,9 +688,18 @@
                 </a>
             </div>
 
+            <!-- ===== TICKET IMAGES (Language-dynamic) ===== -->
             <div class="ticket-images-wrapper">
-                <div class="ticket-img-box"><img src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Ticket.png" alt="Ticket"></div>
-                <div class="ticket-img-box"><img src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Tickets.png" alt="Tickets"></div>
+                <div class="ticket-img-box">
+                    <img id="ticketMainImg"
+                         src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Ticket%20Spanich.png"
+                         alt="Ticket">
+                </div>
+                <div class="ticket-img-box">
+                    <img id="ticketNumbersImg"
+                         src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Tickets%20Spanich.png"
+                         alt="Tickets">
+                </div>
             </div>
         </div>
     </section>
@@ -943,6 +952,18 @@
     <script>
         const WHATSAPP_NUMBER = "13852228100";
 
+        // ===== TICKET IMAGE URLS (Per Language) =====
+        const ticketImages = {
+            es: {
+                main: "https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Ticket%20Spanich.png",
+                numbers: "https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Tickets%20Spanich.png"
+            },
+            en: {
+                main: "https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Tickect%20English.png",
+                numbers: "https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Tickects%20English.png"
+            }
+        };
+
         const waMessages = {
             es: {
                 "wa-floating": "Hola, quiero comprar un boleto para la rifa SAM 12,000 BTU.",
@@ -977,6 +998,18 @@
             document.querySelectorAll('[data-wa-key]').forEach(el => {
                 el.setAttribute('href', getWhatsAppLink(el.getAttribute('data-wa-key')));
             });
+        }
+
+        // ===== UPDATE TICKET IMAGES BASED ON LANGUAGE =====
+        function updateTicketImages(lang) {
+            const mainImg = document.getElementById('ticketMainImg');
+            const numbersImg = document.getElementById('ticketNumbersImg');
+            if (mainImg && ticketImages[lang]) {
+                mainImg.src = ticketImages[lang].main;
+            }
+            if (numbersImg && ticketImages[lang]) {
+                numbersImg.src = ticketImages[lang].numbers;
+            }
         }
 
         const translations = {
@@ -1165,6 +1198,8 @@
                     el.textContent = translations[lang][key];
                 }
             });
+            // ===== UPDATE TICKET IMAGES =====
+            updateTicketImages(lang);
             updateWhatsAppLinks();
             localStorage.setItem('preferred-lang', lang);
         }
