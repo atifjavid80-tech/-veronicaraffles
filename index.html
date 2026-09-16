@@ -330,7 +330,7 @@
         }
         .ticket-img-box img { width: 100%; height: auto; display: block; transition: 0.3s; }
 
-        /* ===== SCORE BOARD SECTION (Google Apps Script) ===== */
+        /* ===== SCORE BOARD ===== */
         .scoreboard-wrap {
             max-width: 950px;
             margin: 50px auto 0;
@@ -350,23 +350,6 @@
             border: none;
             display: block;
             background: #ffffff;
-        }
-        .scoreboard-title {
-            text-align: center;
-            font-family: 'Oswald', sans-serif;
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
-            font-weight: 800;
-            text-transform: uppercase;
-            color: var(--cyan);
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-            text-shadow: 0 0 20px rgba(0,229,255,0.5);
-        }
-        .scoreboard-sub {
-            text-align: center;
-            color: var(--page-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
         }
         @media (max-width: 768px) {
             .scoreboard-box iframe { height: 500px; }
@@ -689,7 +672,6 @@
                 <span class="cyan-glow" data-i18n="hero-title-3">SAM 12,000 BTU</span>
             </h1>
 
-            <!-- AC IMAGE -->
             <img src="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/BfznQ1MMlpJmf3AhtPUEULO7QidfqE4Chh0VYNac.webp"
                  onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/main/ac.webp';"
                  alt="Aire Acondicionado SAM 12,000 BTU con Compresor Toshiba"
@@ -734,7 +716,7 @@
                 </a>
             </div>
 
-            <!-- ===== TICKET IMAGES ===== -->
+            <!-- TICKET IMAGES -->
             <div class="ticket-images-wrapper">
                 <div class="ticket-img-box">
                     <img id="ticketMainImg"
@@ -748,19 +730,17 @@
                 </div>
             </div>
 
-            <!-- ===== SCORE BOARD (Google Apps Script Live Update) ===== -->
+            <!-- SCORE BOARD -->
             <div class="scoreboard-wrap">
-                <h2 class="scoreboard-title" data-i18n="scoreboard-title">🎟️ Disponibilidad de Boletos</h2>
-                <p class="scoreboard-sub" data-i18n="scoreboard-sub">Actualización en vivo — mira qué números están disponibles</p>
                 <div class="scoreboard-box">
                     <iframe 
-                        src="https://script.google.com/macros/s/AKfycby_YtH4Jh4VUEsBH6yMUcLwzOyIF3h3Js4-ta05Jna2cCXnMEoxoYVbozzA7LB2kgjc/exec"
+                        id="scoreboardIframe"
+                        src="https://script.google.com/macros/s/AKfycby_YtH4Jh4VUEsBH6yMUcLwzOyIF3h3Js4-ta05Jna2cCXnMEoxoYVbozzA7LB2kgjc/exec?lang=es"
                         frameborder="0"
                         loading="lazy">
                     </iframe>
                 </div>
             </div>
-            <!-- ===== END SCORE BOARD ===== -->
 
         </div>
     </section>
@@ -1012,6 +992,7 @@
 
     <script>
         const WHATSAPP_NUMBER = "13852228100";
+        const SCOREBOARD_URL = "https://script.google.com/macros/s/AKfycby_YtH4Jh4VUEsBH6yMUcLwzOyIF3h3Js4-ta05Jna2cCXnMEoxoYVbozzA7LB2kgjc/exec";
 
         // ===== TICKET IMAGE URLS =====
         const ticketImages = {
@@ -1068,6 +1049,14 @@
             if (numbersImg && ticketImages[lang]) numbersImg.src = ticketImages[lang].numbers;
         }
 
+        // ===== UPDATE SCOREBOARD LANGUAGE =====
+        function updateScoreboardLang(lang) {
+            var iframe = document.getElementById('scoreboardIframe');
+            if (iframe) {
+                iframe.src = SCOREBOARD_URL + '?lang=' + lang;
+            }
+        }
+
         const translations = {
             es: {
                 "floating-btn": "Comprar Boleto",
@@ -1092,8 +1081,6 @@
                 "raffle-title-2": "OFICIAL",
                 "raffle-sub": "Compra tu boleto antes de que se agoten. El sorteo se realiza cuando se vendan los 75.",
                 "buy-ticket-cta": "COMPRAR BOLETO",
-                "scoreboard-title": "🎟️ Disponibilidad de Boletos",
-                "scoreboard-sub": "Actualización en vivo — mira qué números están disponibles",
                 "models-title-1": "MODELOS",
                 "models-title-2": "EMBAJADORES",
                 "models-sub": "Las caras detrás de nuestras campañas. Solo unas pocas son seleccionadas como embajadoras.",
@@ -1165,8 +1152,6 @@
                 "raffle-title-2": "TICKET",
                 "raffle-sub": "Buy your ticket before they sell out. The draw happens when all 75 are sold.",
                 "buy-ticket-cta": "BUY TICKET",
-                "scoreboard-title": "🎟️ Ticket Availability",
-                "scoreboard-sub": "Live update — see which numbers are available",
                 "models-title-1": "AMBASSADOR",
                 "models-title-2": "MODELS",
                 "models-sub": "The faces behind our campaigns. Only a few are selected as ambassadors.",
@@ -1260,6 +1245,7 @@
             });
             updateTicketImages(lang);
             updateWhatsAppLinks();
+            updateScoreboardLang(lang);
             localStorage.setItem('preferred-lang', lang);
         }
 
