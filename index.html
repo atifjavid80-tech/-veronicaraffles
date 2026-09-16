@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Verónica Raffles | Boletos de Rifa</title>
 
-    <!-- ===== FAVICON (Desktop + Mobile) ===== -->
+    <!-- ===== FAVICON ===== -->
     <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Favicon.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Favicon.png">
@@ -329,6 +329,52 @@
             transform: translateY(-5px);
         }
         .ticket-img-box img { width: 100%; height: auto; display: block; transition: 0.3s; }
+
+        /* ===== SCORE BOARD SECTION (Google Apps Script) ===== */
+        .scoreboard-wrap {
+            max-width: 950px;
+            margin: 50px auto 0;
+            padding: 0 15px;
+        }
+        .scoreboard-box {
+            background: radial-gradient(ellipse at 50% 0%, rgba(0,229,255,0.12) 0%, transparent 60%), var(--navy);
+            border-radius: 20px;
+            border: 3px solid var(--cyan);
+            box-shadow: 0 0 30px rgba(0,229,255,0.6), 0 0 60px rgba(0,229,255,0.3), 0 0 100px rgba(0,229,255,0.15);
+            overflow: hidden;
+            padding: 0;
+        }
+        .scoreboard-box iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            display: block;
+            background: #ffffff;
+        }
+        .scoreboard-title {
+            text-align: center;
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--cyan);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(0,229,255,0.5);
+        }
+        .scoreboard-sub {
+            text-align: center;
+            color: var(--page-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 768px) {
+            .scoreboard-box iframe { height: 500px; }
+        }
+        @media (max-width: 576px) {
+            .scoreboard-box iframe { height: 420px; }
+            .scoreboard-box { border-width: 2px; }
+        }
 
         .models-section { padding: 60px 0; }
         .model-card {
@@ -688,7 +734,7 @@
                 </a>
             </div>
 
-            <!-- ===== TICKET IMAGES (Language-dynamic) ===== -->
+            <!-- ===== TICKET IMAGES ===== -->
             <div class="ticket-images-wrapper">
                 <div class="ticket-img-box">
                     <img id="ticketMainImg"
@@ -701,6 +747,21 @@
                          alt="Tickets">
                 </div>
             </div>
+
+            <!-- ===== SCORE BOARD (Google Apps Script Live Update) ===== -->
+            <div class="scoreboard-wrap">
+                <h2 class="scoreboard-title" data-i18n="scoreboard-title">🎟️ Disponibilidad de Boletos</h2>
+                <p class="scoreboard-sub" data-i18n="scoreboard-sub">Actualización en vivo — mira qué números están disponibles</p>
+                <div class="scoreboard-box">
+                    <iframe 
+                        src="https://script.google.com/macros/s/AKfycby_YtH4Jh4VUEsBH6yMUcLwzOyIF3h3Js4-ta05Jna2cCXnMEoxoYVbozzA7LB2kgjc/exec"
+                        frameborder="0"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+            <!-- ===== END SCORE BOARD ===== -->
+
         </div>
     </section>
 
@@ -952,7 +1013,7 @@
     <script>
         const WHATSAPP_NUMBER = "13852228100";
 
-        // ===== TICKET IMAGE URLS (Per Language) =====
+        // ===== TICKET IMAGE URLS =====
         const ticketImages = {
             es: {
                 main: "https://raw.githubusercontent.com/atifjavid80-tech/-veronicaraffles/refs/heads/main/Ticket%20Spanich.png",
@@ -1000,16 +1061,11 @@
             });
         }
 
-        // ===== UPDATE TICKET IMAGES BASED ON LANGUAGE =====
         function updateTicketImages(lang) {
             const mainImg = document.getElementById('ticketMainImg');
             const numbersImg = document.getElementById('ticketNumbersImg');
-            if (mainImg && ticketImages[lang]) {
-                mainImg.src = ticketImages[lang].main;
-            }
-            if (numbersImg && ticketImages[lang]) {
-                numbersImg.src = ticketImages[lang].numbers;
-            }
+            if (mainImg && ticketImages[lang]) mainImg.src = ticketImages[lang].main;
+            if (numbersImg && ticketImages[lang]) numbersImg.src = ticketImages[lang].numbers;
         }
 
         const translations = {
@@ -1036,6 +1092,8 @@
                 "raffle-title-2": "OFICIAL",
                 "raffle-sub": "Compra tu boleto antes de que se agoten. El sorteo se realiza cuando se vendan los 75.",
                 "buy-ticket-cta": "COMPRAR BOLETO",
+                "scoreboard-title": "🎟️ Disponibilidad de Boletos",
+                "scoreboard-sub": "Actualización en vivo — mira qué números están disponibles",
                 "models-title-1": "MODELOS",
                 "models-title-2": "EMBAJADORES",
                 "models-sub": "Las caras detrás de nuestras campañas. Solo unas pocas son seleccionadas como embajadoras.",
@@ -1107,6 +1165,8 @@
                 "raffle-title-2": "TICKET",
                 "raffle-sub": "Buy your ticket before they sell out. The draw happens when all 75 are sold.",
                 "buy-ticket-cta": "BUY TICKET",
+                "scoreboard-title": "🎟️ Ticket Availability",
+                "scoreboard-sub": "Live update — see which numbers are available",
                 "models-title-1": "AMBASSADOR",
                 "models-title-2": "MODELS",
                 "models-sub": "The faces behind our campaigns. Only a few are selected as ambassadors.",
@@ -1198,7 +1258,6 @@
                     el.textContent = translations[lang][key];
                 }
             });
-            // ===== UPDATE TICKET IMAGES =====
             updateTicketImages(lang);
             updateWhatsAppLinks();
             localStorage.setItem('preferred-lang', lang);
